@@ -1,0 +1,9 @@
+[package]
+name = "vsplit"
+version = "0.1.0"
+authors = ["statiolake <statiolake@gmail.com>"]
+edition = "2018"
+
+[dependencies]
+unicode-width = "0.1.5"
+itertools = "0.8.0"
