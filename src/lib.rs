@@ -6,8 +6,8 @@ use unicode_width::*;
 /// to display the content.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Pane {
-    lines: Vec<String>,
-    width: usize,
+    pub lines: Vec<String>,
+    pub width: usize,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
