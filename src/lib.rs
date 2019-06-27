@@ -2,6 +2,8 @@ use itertools::Itertools;
 use std::cmp;
 use unicode_width::*;
 
+/// Represents pane.  lines are the content of the pane and width is the width with which you want
+/// to display the content.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Pane {
     lines: Vec<String>,
@@ -41,6 +43,7 @@ fn map_collect<T: IntoIterator, U, F: FnMut(T::Item) -> U>(iter: T, f: F) -> Vec
     iter.into_iter().map(f).collect()
 }
 
+/// Returns the merged string.
 pub fn vsplit(panes: Vec<Pane>, delims: Vec<String>) -> Vec<String> {
     assert_eq!(
         panes.len(),
