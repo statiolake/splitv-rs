@@ -1,4 +1,4 @@
-# vsplit
+# splitv
 
 Show multiple panes in the terminal.  Use this to show diff.
 

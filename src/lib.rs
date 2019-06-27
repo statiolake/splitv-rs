@@ -44,7 +44,7 @@ fn map_collect<T: IntoIterator, U, F: FnMut(T::Item) -> U>(iter: T, f: F) -> Vec
 }
 
 /// Returns the merged string.
-pub fn vsplit(panes: Vec<Pane>, delims: Vec<String>) -> Vec<String> {
+pub fn splitv(panes: Vec<Pane>, delims: Vec<String>) -> Vec<String> {
     assert_eq!(
         panes.len(),
         delims.len() + 1,
@@ -214,7 +214,7 @@ mod tests {
 
         println!(
             "{}",
-            vsplit(vec![lines, pane1, pane2], vec![S(" | "), S(" | ")]).join("\n")
+            splitv(vec![lines, pane1, pane2], vec![S(" | "), S(" | ")]).join("\n")
         );
     }
 }

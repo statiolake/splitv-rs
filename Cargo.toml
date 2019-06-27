@@ -1,9 +1,9 @@
 [package]
-name = "vsplit"
+name = "splitv"
 version = "0.1.0"
 authors = ["statiolake <statiolake@gmail.com>"]
 edition = "2018"
-repository = "https://github.com/statiolake/vsplit-rs"
+repository = "https://github.com/statiolake/splitv-rs"
 license = "MIT OR Apache-2.0"
 readme = "README.md"
 description = "Show texts side by side"
