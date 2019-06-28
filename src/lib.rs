@@ -6,7 +6,7 @@ use unicode_width::*;
 /// to display the content.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Pane<'a> {
-    pub lines: &'a [String],
+    pub lines: &'a [&'a str],
     pub width: usize,
 }
 
@@ -44,7 +44,7 @@ fn map_collect<T: IntoIterator, U, F: FnMut(T::Item) -> U>(iter: T, f: F) -> Vec
 }
 
 /// Returns the merged string.
-pub fn splitv(panes: &[Pane], delims: &[String]) -> Vec<String> {
+pub fn splitv(panes: &[Pane], delims: &[&str]) -> Vec<String> {
     assert_eq!(
         panes.len(),
         delims.len() + 1,
@@ -121,7 +121,7 @@ fn merge(
     LineWise {
         lines_in_panes_in_line,
     }: LineWise,
-    delims: &[String],
+    delims: &[&str],
 ) -> MergedLine {
     let max_lines = lines_in_panes_in_line.iter().fold(0, |max, pane| {
         cmp::max(max, pane.wrapped_lines_in_line.len())
@@ -142,7 +142,7 @@ fn merge(
         lines_in_panes_in_line
             .iter()
             .map(extract_line)
-            .interleave(delims.iter().cloned())
+            .interleave(delims.iter().map(|x| x.to_string()))
             .join("")
     });
 
@@ -202,15 +202,15 @@ mod tests {
     #[test]
     fn display() {
         let lines = Pane {
-            lines: &vec![S("1"), S("2"), S("3"), S("4")],
+            lines: &vec!["1", "2", "3", "4"],
             width: 3,
         };
-        let pane1 = Pane { lines: &vec![S("Lorem ipsum dolor sit amet, consectetur adipiscing elit,"), S("sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."), S("Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."), S("Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.")], width: 30};
-        let pane2 = Pane { lines: &vec![S("Lorem ipsum dolor sit amet, consectetur adipiscing elit,"), S("sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."), S("Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."), S("とりあえずここに自然に日本語がまぎれてきてもたぶんいい感じに切ってくれるはずだよね")], width: 40};
+        let pane1 = Pane { lines: &vec!["Lorem ipsum dolor sit amet, consectetur adipiscing elit,", "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.", "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.", "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."], width: 30};
+        let pane2 = Pane { lines: &vec!["Lorem ipsum dolor sit amet, consectetur adipiscing elit,", "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.", "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.", "とりあえずここに自然に日本語がまぎれてきてもたぶんいい感じに切ってくれるはずだよね"], width: 40};
 
         println!(
             "{}",
-            splitv(&vec![lines, pane1, pane2], &vec![S(" | "), S(" | ")]).join("\n")
+            splitv(&vec![lines, pane1, pane2], &vec![" | ", " | "]).join("\n")
         );
     }
 }
